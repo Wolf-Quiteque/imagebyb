@@ -14,8 +14,10 @@ export default function Hero() {
         src="/images/byb09545.jpeg"
         alt="Hero background - wedding couple with natural golden hour lighting"
         fill
-        className="object-cover md:object-top-center lg:object-center"
+        className="object-cover"
         priority
+        style={{ objectPosition: 'top center',}}
+        sizes="100vw"
       />
 
       {/* Overlay */}

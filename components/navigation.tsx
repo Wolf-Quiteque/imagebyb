@@ -34,8 +34,8 @@ export default function Navigation() {
             <Image
               src="/images/logo.png"
               alt="ImageryBYB Logo"
-              width={150}
-              height={60}
+              width={170}
+              height={80}
               className="h-12 w-auto"
               priority
             />
