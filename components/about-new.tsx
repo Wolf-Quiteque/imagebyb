@@ -24,10 +24,10 @@ export default function AboutNew() {
 
           <div className="relative h-64 sm:h-80 md:h-96 rounded-lg overflow-hidden order-1 md:order-2">
             <Image
-              src="/images/photographer-portrait.jpeg"
+              src="/images/photographer-portrait.webp"
               alt="Bilal Gilbert - Photographer"
               fill
-              className="object-cover md:object-center object-top"
+              className="object-cover md:object-top object-top"
             />
           </div>
         </div>

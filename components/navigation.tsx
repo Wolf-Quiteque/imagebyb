@@ -9,8 +9,12 @@ export default function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0)
+      // Get the hero section height (100vh - navbar height)
+      const heroHeight = window.innerHeight - 64 // 64px is navbar height (h-16)
+      setIsScrolled(window.scrollY > heroHeight)
     }
+
+    handleScroll() // Check on mount
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -23,8 +27,8 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white border-b border-gray-200 shadow-sm" : "bg-white/90 backdrop-blur-sm"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
+        isScrolled ? "bg-white border-b border-gray-200 shadow-sm" : "bg-white/60 backdrop-blur-md"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,9 +38,9 @@ export default function Navigation() {
             <Image
               src="/images/logo.png"
               alt="ImageryBYB Logo"
-              width={170}
-              height={80}
-              className="h-12 w-auto"
+              width={255}
+              height={120}
+              className="h-18 w-auto"
               priority
             />
           </div>
