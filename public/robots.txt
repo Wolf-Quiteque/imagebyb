@@ -1,0 +1,26 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin routes
+Disallow: /admincalc
+
+# Sitemap location
+Sitemap: https://imagerybyb.com/sitemap.xml
+
+# Crawl-delay for slower bots
+User-agent: Bingbot
+Crawl-delay: 1
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+# Social media crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /

@@ -1,0 +1,28 @@
+{
+  "name": "ImageryBYB - Houston Wedding Photographer",
+  "short_name": "ImageryBYB",
+  "description": "Professional wedding photographer in Houston, Texas capturing authentic love stories. Specializing in wedding photography, engagement sessions, and couples photography.",
+  "icons": [
+    {
+      "src": "/favicons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicons/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "/",
+  "scope": "/",
+  "categories": ["photography", "wedding", "business"],
+  "lang": "en-US",
+  "dir": "ltr"
+}
