@@ -14,7 +14,6 @@ export default function InquiryFormNew() {
     eventDate: "",
     weddingVenue: "",
     weddingGuestCount: "",
-    weddingBudget: "",
     couplesBudget: "",
     couplestheme: "",
     eventsType: "",
@@ -23,6 +22,8 @@ export default function InquiryFormNew() {
   })
   const [submitted, setSubmitted] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [monthsUntilWedding, setMonthsUntilWedding] = useState<number | null>(null)
+  const [monthlySavings, setMonthlySavings] = useState<number | null>(null)
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
@@ -50,6 +51,25 @@ export default function InquiryFormNew() {
     return Object.keys(newErrors).length === 0
   }
 
+  const calculateMonthlySavings = (weddingDate: string) => {
+    if (!weddingDate) {
+      setMonthsUntilWedding(null)
+      setMonthlySavings(null)
+      return
+    }
+    const today = new Date()
+    const wedding = new Date(weddingDate)
+    const diffTime = wedding.getTime() - today.getTime()
+    const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30))
+    if (diffMonths > 0) {
+      setMonthsUntilWedding(diffMonths)
+      setMonthlySavings(1500 / diffMonths)
+    } else {
+      setMonthsUntilWedding(null)
+      setMonthlySavings(null)
+    }
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -74,13 +94,14 @@ export default function InquiryFormNew() {
       eventDate: "",
       weddingVenue: "",
       weddingGuestCount: "",
-      weddingBudget: "",
       couplesBudget: "",
       couplestheme: "",
       eventsType: "",
       otherDetails: "",
       additionalNotes: "",
     })
+    setMonthsUntilWedding(null)
+    setMonthlySavings(null)
 
     setTimeout(() => setSubmitted(false), 5000)
   }
@@ -217,12 +238,38 @@ export default function InquiryFormNew() {
                   type="date"
                   name="eventDate"
                   value={formData.eventDate}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    setFormData((prev) => ({ ...prev, eventDate: e.target.value }))
+                    if (formData.serviceType === "wedding") {
+                      calculateMonthlySavings(e.target.value)
+                    }
+                    if (errors.eventDate) {
+                      setErrors((prev) => ({ ...prev, eventDate: "" }))
+                    }
+                  }}
                   className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 border rounded-lg focus:outline-none focus:border-black transition-colors text-sm sm:text-base ${
                     errors.eventDate ? "border-red-500" : "border-gray-300"
                   }`}
                 />
                 {errors.eventDate && <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.eventDate}</p>}
+              </div>
+            )}
+
+            {formData.serviceType === "wedding" && monthsUntilWedding !== null && monthlySavings !== null && (
+              <div className="col-span-2 mt-2 p-4 bg-muted/30 rounded-lg border border-border/50">
+                <h3 className="font-serif text-lg font-semibold mb-2">Budget Planning Calculator</h3>
+                <p className="text-sm text-muted-foreground mb-3">Our wedding photography packages start at $1,500</p>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">Months until wedding:</span>
+                    <span className="font-semibold">{monthsUntilWedding} months</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">Recommended monthly savings:</span>
+                    <span className="font-semibold text-lg">${monthlySavings.toFixed(2)}</span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground italic mt-3">This is an estimate based on our starting price. Your final package may vary based on your specific needs and preferences.</p>
               </div>
             )}
 
@@ -243,34 +290,21 @@ export default function InquiryFormNew() {
                   {errors.weddingVenue && <p className="text-red-500 text-sm mt-1">{errors.weddingVenue}</p>}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold mb-2">Guest Count</label>
-                    <input
-                      type="number"
-                      name="weddingGuestCount"
-                      value={formData.weddingGuestCount}
-                      onChange={handleChange}
-                      className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-black transition-colors ${
-                        errors.weddingGuestCount ? "border-red-500" : "border-gray-300"
-                      }`}
-                      placeholder="Approximate count"
-                    />
-                    {errors.weddingGuestCount && (
-                      <p className="text-red-500 text-sm mt-1">{errors.weddingGuestCount}</p>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold mb-2">Budget (Optional)</label>
-                    <input
-                      type="text"
-                      name="weddingBudget"
-                      value={formData.weddingBudget}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors"
-                      placeholder="e.g., $3000-5000"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-2">Guest Count</label>
+                  <input
+                    type="number"
+                    name="weddingGuestCount"
+                    value={formData.weddingGuestCount}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-black transition-colors ${
+                      errors.weddingGuestCount ? "border-red-500" : "border-gray-300"
+                    }`}
+                    placeholder="Approximate count"
+                  />
+                  {errors.weddingGuestCount && (
+                    <p className="text-red-500 text-sm mt-1">{errors.weddingGuestCount}</p>
+                  )}
                 </div>
               </>
             )}
