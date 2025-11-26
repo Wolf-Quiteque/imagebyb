@@ -10,13 +10,25 @@ export default function Hero() {
 
   return (
     <section className="relative w-full h-screen min-h-[500px] bg-black flex items-center justify-center overflow-hidden pt-16">
+      {/* Mobile image */}
       <Image
         src="/images/byb09545.jpeg"
         alt="Hero background - wedding couple with natural golden hour lighting"
         fill
-        className="object-cover"
+        className="object-cover md:hidden"
         priority
         style={{ objectPosition: 'top center',}}
+        sizes="100vw"
+      />
+
+      {/* Desktop image */}
+      <Image
+        src="/images/widedesktop.jpg"
+        alt="Hero background - wedding couple with natural golden hour lighting"
+        fill
+        className="object-cover hidden md:block"
+        priority
+        style={{ objectPosition: 'center center',}}
         sizes="100vw"
       />
 
