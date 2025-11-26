@@ -23,7 +23,7 @@ export default function Hero() {
 
       {/* Desktop image */}
       <Image
-        src="/images/widedesktop.jpg"
+        src="/images/Widedesktop.jpg"
         alt="Hero background - wedding couple with natural golden hour lighting"
         fill
         className="object-cover hidden md:block"
