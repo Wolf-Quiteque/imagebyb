@@ -78,32 +78,48 @@ export default function InquiryFormNew() {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!validateForm()) return
 
-    console.log("Form submitted:", formData)
-    setSubmitted(true)
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      serviceType: "",
-      eventDate: "",
-      weddingVenue: "",
-      weddingGuestCount: "",
-      couplesBudget: "",
-      couplestheme: "",
-      eventsType: "",
-      otherDetails: "",
-      additionalNotes: "",
-    })
-    setMonthsUntilWedding(null)
-    setMonthlySavings(null)
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
 
-    setTimeout(() => setSubmitted(false), 5000)
+      if (!res.ok) {
+        const msg = await res.text().catch(() => "Failed to send. Please try again.")
+        setErrors((prev) => ({ ...prev, form: msg || "Failed to send. Please try again." }))
+        return
+      }
+
+      setSubmitted(true)
+      setErrors({})
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        serviceType: "",
+        eventDate: "",
+        weddingVenue: "",
+        weddingGuestCount: "",
+        couplesBudget: "",
+        couplestheme: "",
+        eventsType: "",
+        otherDetails: "",
+        additionalNotes: "",
+      })
+      setMonthsUntilWedding(null)
+      setMonthlySavings(null)
+
+      setTimeout(() => setSubmitted(false), 5000)
+    } catch {
+      setErrors((prev) => ({ ...prev, form: "Network error. Please try again." }))
+    }
   }
 
   return (
@@ -144,6 +160,10 @@ export default function InquiryFormNew() {
               <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-800">
                 Thank you for your inquiry! We'll be in touch soon.
               </div>
+            )}
+
+            {errors.form && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-800">{errors.form}</div>
             )}
 
             {/* Name Fields */}
